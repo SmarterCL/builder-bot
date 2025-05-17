@@ -7,7 +7,7 @@ import { Send, Sparkles } from "lucide-react"
 
 export default function ChatGPTInterface() {
   const [messages, setMessages] = useState([
-    { id: 1, text: "Hola, soy ChatGPT integrado con SMARTERBOT. ¿En qué puedo ayudarte hoy?", isUser: false },
+    { id: 1, text: "Hola, soy ChatGPT integrado con SmarterBOT. ¿En qué puedo ayudarte hoy?", isUser: false },
   ])
   const [inputValue, setInputValue] = useState("")
 
@@ -37,7 +37,7 @@ export default function ChatGPTInterface() {
       <div className="bg-gray-800 p-3 flex items-center justify-between">
         <div className="font-semibold flex items-center">
           <Sparkles className="h-5 w-5 mr-2 text-green-400" />
-          SMARTERBOT GPT
+          SmarterBOT GPT
         </div>
       </div>
 

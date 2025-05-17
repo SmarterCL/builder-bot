@@ -1,19 +1,44 @@
 "use client"
 
-import { useState } from "react"
+import { useState, useEffect, useRef } from "react"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Send, Mic, Paperclip, Camera } from "lucide-react"
 
-interface WhatsAppChatProps {
-  phoneNumber: string
+interface Message {
+  id: number
+  text: string
+  isUser: boolean
 }
 
-export default function WhatsAppChat({ phoneNumber }: WhatsAppChatProps) {
-  const [messages, setMessages] = useState([
-    { id: 1, text: "¡Hola! Soy el asistente de SMARTERBOT. ¿En qué puedo ayudarte hoy?", isUser: false },
-  ])
+interface WhatsAppChatProps {
+  phoneNumber: string
+  customMessages?: Message[]
+  isUser?: boolean
+}
+
+export default function WhatsAppChat({ phoneNumber, customMessages, isUser = false }: WhatsAppChatProps) {
+  const [messages, setMessages] = useState<Message[]>(
+    customMessages || [
+      { id: 1, text: "¡Hola! Soy el asistente de SmarterBOT. ¿En qué puedo ayudarte hoy?", isUser: false },
+    ],
+  )
   const [inputValue, setInputValue] = useState("")
+  const messagesEndRef = useRef<HTMLDivElement>(null)
+
+  useEffect(() => {
+    if (customMessages) {
+      setMessages(customMessages)
+    }
+  }, [customMessages])
+
+  useEffect(() => {
+    scrollToBottom()
+  }, [messages])
+
+  const scrollToBottom = () => {
+    messagesEndRef.current?.scrollIntoView({ behavior: "smooth" })
+  }
 
   const handleSendMessage = () => {
     if (!inputValue.trim()) return
@@ -23,16 +48,18 @@ export default function WhatsAppChat({ phoneNumber }: WhatsAppChatProps) {
     setInputValue("")
 
     // Simulate bot response after a short delay
-    setTimeout(() => {
-      setMessages((prev) => [
-        ...prev,
-        {
-          id: Date.now(),
-          text: "Gracias por tu mensaje. Estoy procesando tu solicitud con nuestra API builderbot.cloud. ¿Necesitas más información sobre nuestros servicios?",
-          isUser: false,
-        },
-      ])
-    }, 1000)
+    if (!isUser) {
+      setTimeout(() => {
+        setMessages((prev) => [
+          ...prev,
+          {
+            id: Date.now(),
+            text: "Gracias por tu mensaje. Estoy procesando tu solicitud con nuestra API builderbot.cloud. ¿Necesitas más información sobre nuestros servicios?",
+            isUser: false,
+          },
+        ])
+      }, 1000)
+    }
   }
 
   return (
@@ -41,8 +68,8 @@ export default function WhatsAppChat({ phoneNumber }: WhatsAppChatProps) {
       <div className="bg-green-600 text-white p-3 flex items-center">
         <div className="w-8 h-8 rounded-full bg-gray-200 mr-3"></div>
         <div>
-          <div className="font-semibold">SMARTERBOT</div>
-          <div className="text-xs">+{phoneNumber}</div>
+          <div className="font-semibold">{isUser ? "Tú" : "SmarterBOT"}</div>
+          <div className="text-xs">{isUser ? "Usuario" : "+" + phoneNumber}</div>
         </div>
       </div>
 
@@ -62,6 +89,7 @@ export default function WhatsAppChat({ phoneNumber }: WhatsAppChatProps) {
               </div>
             </div>
           ))}
+          <div ref={messagesEndRef} />
         </div>
       </div>
 

@@ -6,13 +6,15 @@ export default function HeroSection() {
       <div className="container px-4 md:px-6">
         <div className="grid gap-6 lg:grid-cols-2 items-center">
           <div className="flex flex-col justify-center space-y-4">
-            <div className="inline-block rounded-lg bg-gray-100 px-3 py-1 text-sm mb-2 w-fit">builderbot.cloud</div>
+            <div className="inline-block rounded-lg bg-blue-100 px-3 py-1 text-sm mb-2 w-fit text-blue-700">
+              Inteligencia Artificial
+            </div>
             <h1 className="text-3xl font-bold tracking-tighter sm:text-5xl md:text-6xl">
-              Potencia tu negocio con IA conversacional
+              WhatsApp + ChatGPT + <span className="text-blue-600">SmarterBot</span>
             </h1>
             <p className="max-w-[600px] text-gray-500 md:text-xl">
-              Integra WhatsApp y ChatGPT en tu plataforma con nuestra API. Conecta con tus clientes de manera
-              inteligente y eficiente.
+              Una experiencia completa para usuarios inteligentes. Conecta tus plataformas favoritas con la potencia de
+              la IA.
             </p>
             <div className="flex flex-col sm:flex-row gap-3 pt-4">
               <Button className="bg-blue-600 hover:bg-blue-700 text-white">
@@ -36,15 +38,15 @@ export default function HeroSection() {
                   <path d="m12 13-3 9 3-2 3 2-3-9Z" />
                 </svg>
               </Button>
-              <Button variant="outline">Contactar</Button>
+              <Button variant="outline">Ver Planes</Button>
             </div>
           </div>
           <div className="flex items-center justify-center">
             <div className="relative w-[300px] h-[600px]">
               <div className="absolute top-0 left-0 w-full h-full flex items-center justify-center">
                 <img
-                  src="/ai-smartphone-interface.png"
-                  alt="Smartphone con interfaz de IA"
+                  src="/smarterbot-devices.png"
+                  alt="SmarterBot en dispositivos móviles"
                   className="object-cover rounded-3xl shadow-lg"
                 />
               </div>
