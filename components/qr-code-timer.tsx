@@ -1,18 +1,35 @@
 "use client"
 
-import { useEffect, useRef } from "react"
+import { useEffect, useRef, useState } from "react"
 
-interface QRCodeProps {
-  value: string
-  size?: number
+interface QRCodeTimerProps {
+  initialMinutes: number
+  initialSeconds: number
 }
 
-export default function QRCode({ value, size = 200 }: QRCodeProps) {
+export default function QRCodeTimer({ initialMinutes, initialSeconds }: QRCodeTimerProps) {
+  const [minutes, setMinutes] = useState(initialMinutes)
+  const [seconds, setSeconds] = useState(initialSeconds)
   const canvasRef = useRef<HTMLCanvasElement>(null)
+  const size = 250
 
   useEffect(() => {
-    // In a real implementation, you would use a library like qrcode.js
-    // This is a simplified representation for demonstration
+    const interval = setInterval(() => {
+      if (seconds > 0) {
+        setSeconds(seconds - 1)
+      } else if (minutes > 0) {
+        setMinutes(minutes - 1)
+        setSeconds(59)
+      } else {
+        clearInterval(interval)
+      }
+    }, 1000)
+
+    return () => clearInterval(interval)
+  }, [minutes, seconds])
+
+  useEffect(() => {
+    // This is a simplified QR code representation
     const canvas = canvasRef.current
     if (!canvas) return
 
@@ -72,17 +89,19 @@ export default function QRCode({ value, size = 200 }: QRCodeProps) {
     ctx.font = "bold 20px Arial"
     ctx.textAlign = "center"
     ctx.fillText("SB", size / 2, size / 2 + 7)
-
-    // Add URL text at bottom
-    ctx.fillStyle = "black"
-    ctx.font = "10px Arial"
-    ctx.textAlign = "center"
-    ctx.fillText(value.substring(0, 30), size / 2, size - 10)
-  }, [value, size])
+  }, [])
 
   return (
-    <div className="border-8 border-white shadow-xl rounded-lg">
-      <canvas ref={canvasRef} width={size} height={size} className="rounded-lg" />
+    <div className="flex flex-col items-center">
+      <div className="border-8 border-white shadow-xl rounded-lg mb-2">
+        <canvas ref={canvasRef} width={size} height={size} className="rounded-lg" />
+      </div>
+      <div className="text-center">
+        <p className="text-sm text-gray-500">QR dinámico</p>
+        <p className="text-md font-medium">
+          ⏱️ Tiempo restante del demo: {minutes}:{seconds < 10 ? `0${seconds}` : seconds}
+        </p>
+      </div>
     </div>
   )
 }
